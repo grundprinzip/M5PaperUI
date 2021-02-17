@@ -43,12 +43,18 @@ public:
 
   virtual bool EventInside(int16_t x, int16_t y) const { return false; }
 
+  // Register an external event handler for this widget. The external event
+  // handler is called as soon as internal event handling is done.
   void RegisterHandler(handler_fun_t f);
 
+  // This function handles the event procedure for the widget. Before calling
+  // any registered external event handler, it will call InternalEventHandler
+  // once for the widget.
   void HandleEvent(TouchEvent evt);
 
 protected:
 
+  // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
 
   void NeedsNewCanvas(bool flag) {
