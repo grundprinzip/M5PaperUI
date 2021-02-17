@@ -26,8 +26,9 @@ bool WButton::Draw() {
 }
 
 void WButton::InternalEventHandler(TouchEvent evt) {
-
+  log_d("Handling event");
   if (last_event_ != evt.type) {
+    log_d("Updating state");
     last_event_ = evt.type;
     view_dirty_ = true;
   }

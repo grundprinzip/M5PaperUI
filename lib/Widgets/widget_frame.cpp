@@ -18,7 +18,7 @@ void Frame::AddWidget(const Widget::ptr_t &w) {
   widgets_.push_back(w);
 }
 
-void Frame::Init() {
+void Frame::Init(WidgetContext*) {
   canvas_.createCanvas(width_, height_);
   for (const auto &w : widgets_) {
     w->Init();
@@ -40,7 +40,7 @@ void Frame::Draw() {
   if (is_view_dirty) {
     log_d("Updating EPD");
     state_ = WidgetState::POST;
-    M5.EPD.UpdateFull(UPDATE_MODE_GC16);
+    M5.EPD.UpdateFull(update_mode_);
   }
 }
 

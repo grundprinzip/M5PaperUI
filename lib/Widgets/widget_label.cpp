@@ -15,7 +15,10 @@ void Label::Init() {
   }
   // The canvas is created according to the x and y positions, which means, only
   // border adjustment is necessary.
-  canvas_->drawString(text_.c_str(), border_offset, border_offset);
+  int16_t x = has_own_canvas_ ? 0 : x_;
+  int16_t y = has_own_canvas_ ? 0 : y_;
+
+  canvas_->drawString(text_.c_str(), x + border_offset, y + border_offset);
 }
 
 uint8_t Label::convert_alignment() const {

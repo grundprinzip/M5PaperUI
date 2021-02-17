@@ -31,6 +31,8 @@ public:
 
   void HAlign(HAlignment a) { h_align_ = a; }
 
+  inline void TextSize(int16_t s) { text_size_ = s; }
+
 protected:
   std::string text_;
   int16_t text_size_;

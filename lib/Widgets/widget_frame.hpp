@@ -8,8 +8,26 @@
 
 enum class WidgetState { PRE, UDPATE, POST };
 
+class WidgetContext;
+
 // Forward declaration.
 class Widget;
+
+class View {
+public:
+  using ptr_t = std::shared_ptr<View>;
+  virtual void Init(WidgetContext*) = 0;
+  virtual void Draw() = 0;
+
+  /// This function is called by the UI main loop when an event is executed. If
+  /// the function returns true, this frame can respond to the event.
+  virtual bool EventInside(int16_t x, int16_t y) const = 0;
+
+  /// This function is called by the UI main loop to handle a specific touch
+  /// event. The touch event contains necessary information about the state of
+  /// the touch and some of its raw parameters
+  virtual void HandleEvent(TouchEvent evt) = 0;
+};
 
 /// The frame is the center piece when displaying content on the screen. A frame
 /// represents the canvas that is drawn on the screen. Different frames can be
@@ -17,7 +35,7 @@ class Widget;
 ///
 /// Each frame contains a list of Widgets (@see Widget) that is displayed. Each
 /// Widget is initialized and drawn when needed.
-class Frame {
+class Frame : public View {
 public:
   using ptr_t = std::shared_ptr<Frame>;
 
@@ -34,11 +52,11 @@ public:
   }
 
   /// Initializes all views that have been added to the frame.
-  void Init();
+  void Init(WidgetContext*) override;
 
   /// Is called to draw all view elements. View elements are only drawn if
   /// dirty.
-  void Draw();
+  void Draw() override;
 
   /// Allows setting the update mode for the display. Different update modes
   /// have different properties with regards to refresh time and ghosting on the
@@ -59,14 +77,9 @@ public:
   /// of the frame.
   inline void RequireRedraw() { state_ = WidgetState::PRE; }
 
-  /// This function is called by the UI main loop when an event is executed. If
-  /// the function returns true, this frame can respond to the event.
-  bool EventInside(int16_t x, int16_t y) const;
+  bool EventInside(int16_t x, int16_t y) const override;
 
-  /// This function is called by the UI main loop to handle a specific touch
-  /// event. The touch event contains necessary information about the state of
-  /// the touch and some of its raw parameters
-  void HandleEvent(TouchEvent evt);
+  void HandleEvent(TouchEvent evt) override;
 
 protected:
   int16_t x_;

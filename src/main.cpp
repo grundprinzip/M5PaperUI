@@ -70,8 +70,8 @@ void setup() {
     frame->AddWidget(w); */
 
   //ctx->AddFrame(frame);
-  MainWindow win;
-  win.Init(ctx);
+  auto win = std::make_shared<MainWindow>();
+  ctx->AddFrame(win);
 }
 
 void loop() {
