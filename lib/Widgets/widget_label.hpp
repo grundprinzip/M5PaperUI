@@ -13,13 +13,14 @@ public:
 
   using ptr_t = std::shared_ptr<Label>;
 
-  Label(int16_t x, int16_t y, int16_t w, int16_t h, const std::string &text, int16_t size = 3)
+  Label(int16_t x, int16_t y, int16_t w, int16_t h, const std::string &text,
+        int16_t size = 3)
       : Widget(x, y, w, h), text_(text), text_size_(size) {}
 
   virtual ~Label() {}
 
-  static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h, const std::string &text,
-                      int16_t size = 3) {
+  static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h,
+                      const std::string &text, int16_t size = 3) {
     const auto &ptr = std::make_shared<Label>(x, y, w, h, text, size);
     return ptr;
   }

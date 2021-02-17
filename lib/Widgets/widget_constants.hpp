@@ -4,27 +4,25 @@
 #include <cstdint>
 #include <sstream>
 
-
-enum class EventType { NONE=0, TOUCH_DOWN, TOUCH_UP, DOUBLE_TOUCH, DRAG };
+enum class EventType { NONE = 0, TOUCH_DOWN, TOUCH_UP, DOUBLE_TOUCH, DRAG };
 
 struct TouchEvent {
-    int16_t x1;
-    int16_t y1;
-    int16_t x2;
-    int16_t y2;
-    EventType type;
+  int16_t x1;
+  int16_t y1;
+  int16_t x2;
+  int16_t y2;
+  EventType type;
 
-    int16_t size;
-    int16_t id;
+  int16_t size;
+  int16_t id;
 
-    std::string str() {
-      std::ostringstream buf;
-      buf << "TouchEvent<x1=" << x1 << ",y1=" << y1 << ",x2=" << x2
-          << ",y2=" << y2 << ",type=" << static_cast<int>(type) << ">";
-      return buf.str();
-    }
-  };
-
+  std::string str() {
+    std::ostringstream buf;
+    buf << "TouchEvent<x1=" << x1 << ",y1=" << y1 << ",x2=" << x2
+        << ",y2=" << y2 << ",type=" << static_cast<int>(type) << ">";
+    return buf.str();
+  }
+};
 
 class Grayscale {
 public:
@@ -66,21 +64,14 @@ private:
 
 class WidgetStyle {
 public:
-  enum Value : int16_t {
-    NONE = 0,
-    BORDER = 1,
-    FILL = 2,
-    FILL_W_BORDER = 4
-  };
+  enum Value : int16_t { NONE = 0, BORDER = 1, FILL = 2, FILL_W_BORDER = 4 };
   WidgetStyle() = default;
   constexpr WidgetStyle(Value val) : value_(val) {}
 
   operator Value() const { return value_; }
   explicit operator bool() = delete;
 
-  inline bool ShouldDraw(WidgetStyle::Value v) {
-    return value_ & v;
-  }
+  inline bool ShouldDraw(WidgetStyle::Value v) { return value_ & v; }
 
   constexpr bool operator==(WidgetStyle a) const { return value_ == a.value_; }
   constexpr bool operator==(WidgetStyle::Value a) const { return value_ == a; }

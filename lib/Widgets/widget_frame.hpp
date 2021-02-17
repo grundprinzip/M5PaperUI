@@ -43,20 +43,14 @@ public:
   inline void UpdateMode(m5epd_update_mode_t u) { update_mode_ = u; }
 
   /// Adds a new widget to the list.
-  void AddWidget(const std::shared_ptr<Widget>& w);
+  void AddWidget(const std::shared_ptr<Widget> &w);
 
   /// Return the update mode for the frame.
-  m5epd_update_mode_t update_mode() const {
-    return update_mode_;
-  }
+  m5epd_update_mode_t update_mode() const { return update_mode_; }
 
-  inline bool NeedsRedraw() {
-    return state_ == WidgetState::PRE;
-  }
+  inline bool NeedsRedraw() { return state_ == WidgetState::PRE; }
 
-  inline void RequireRedraw() {
-    state_ = WidgetState::PRE;
-  }
+  inline void RequireRedraw() { state_ = WidgetState::PRE; }
 
   bool EventInside(int16_t x, int16_t y) const;
 

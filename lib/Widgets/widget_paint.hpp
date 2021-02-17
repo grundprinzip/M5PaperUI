@@ -4,11 +4,10 @@
 
 class Paint : public Widget {
 public:
- Paint(int16_t x, int16_t y, int16_t w, int16_t h)
-      : Widget(x, y, w, h) {
-        widget_style_ = WidgetStyle::BORDER;
-        border_color_ = Grayscale::G15;
-      }
+  Paint(int16_t x, int16_t y, int16_t w, int16_t h) : Widget(x, y, w, h) {
+    widget_style_ = WidgetStyle::BORDER;
+    border_color_ = Grayscale::G15;
+  }
 
   virtual ~Paint() {}
 

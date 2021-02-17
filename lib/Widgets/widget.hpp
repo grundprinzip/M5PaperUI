@@ -1,9 +1,9 @@
 #pragma once
 #include <M5EPD.h>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <vector>
-#include <functional>
 
 #include "widget_constants.hpp"
 #include "widget_frame.hpp"
@@ -53,13 +53,10 @@ public:
   void HandleEvent(TouchEvent evt);
 
 protected:
-
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
 
-  void NeedsNewCanvas(bool flag) {
-    needs_new_canvas_ = flag;
-  }
+  void NeedsNewCanvas(bool flag) { needs_new_canvas_ = flag; }
 
   // Width of the widgets.
   int16_t width_;

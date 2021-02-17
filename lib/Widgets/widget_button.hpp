@@ -15,8 +15,7 @@ public:
 
   WButton(int16_t x, int16_t y, int16_t width, int16_t height,
           const std::string &text)
-      : Label(x, y, width, height, text) {
-  }
+      : Label(x, y, width, height, text) {}
 
   virtual ~WButton() {}
 
@@ -35,5 +34,5 @@ public:
   virtual void InternalEventHandler(TouchEvent evt) override;
 
 protected:
-  EventType last_event_ =  EventType::NONE;
+  EventType last_event_ = EventType::NONE;
 };

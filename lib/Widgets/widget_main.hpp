@@ -11,7 +11,6 @@
 
 class WidgetContext {
 public:
-
   using ptr_t = std::shared_ptr<WidgetContext>;
 
   void AddFrame(const Frame::ptr_t &f) {
