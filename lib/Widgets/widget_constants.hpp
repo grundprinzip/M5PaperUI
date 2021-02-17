@@ -1,6 +1,30 @@
 #pragma once
 #include <M5EPD_Canvas.h>
+
 #include <cstdint>
+#include <sstream>
+
+
+enum class EventType { NONE=0, TOUCH_DOWN, TOUCH_UP, DOUBLE_TOUCH, DRAG };
+
+struct TouchEvent {
+    int16_t x1;
+    int16_t y1;
+    int16_t x2;
+    int16_t y2;
+    EventType type;
+
+    int16_t size;
+    int16_t id;
+
+    std::string str() {
+      std::ostringstream buf;
+      buf << "TouchEvent<x1=" << x1 << ",y1=" << y1 << ",x2=" << x2
+          << ",y2=" << y2 << ",type=" << static_cast<int>(type) << ">";
+      return buf.str();
+    }
+  };
+
 
 class Grayscale {
 public:

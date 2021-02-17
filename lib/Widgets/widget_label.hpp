@@ -1,31 +1,26 @@
 #pragma once
-#include <string>
-#include <memory>
 #include <cstdint>
+#include <memory>
+#include <string>
 
 #include "widget.hpp"
 
 class Label : public Widget {
 public:
+  enum HAlignment { LEFT, MIDDLE, RIGHT };
 
-  enum HAlignment {
-    LEFT, MIDDLE, RIGHT
-  };
-
-  enum VAlignment {
-    TOP, CENTER, BOTTOM
-  };
+  enum VAlignment { TOP, CENTER, BOTTOM };
 
   using ptr_t = std::shared_ptr<Label>;
 
-  Label(int16_t x, int16_t y, int16_t width, int16_t height, const std::string& text, int16_t size = 3):
-    Widget(x, y, width, height), text_(text), text_size_(size) {}
-
+  Label(int16_t x, int16_t y, int16_t w, int16_t h, const std::string &text, int16_t size = 3)
+      : Widget(x, y, w, h), text_(text), text_size_(size) {}
 
   virtual ~Label() {}
 
-  static ptr_t Create(int16_t x, int16_t y, int16_t width, int16_t height, const std::string& text, int16_t size = 3) {
-    const auto& ptr = std::make_shared<Label>(x, y, width, height, text, size);
+  static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h, const std::string &text,
+                      int16_t size = 3) {
+    const auto &ptr = std::make_shared<Label>(x, y, w, h, text, size);
     return ptr;
   }
 
@@ -33,13 +28,9 @@ public:
 
   virtual void Draw() override;
 
-  void VAlign(VAlignment a) {
-    v_align_ = a;
-  }
+  void VAlign(VAlignment a) { v_align_ = a; }
 
-  void HAlign(HAlignment a) {
-    h_align_ = a;
-  }
+  void HAlign(HAlignment a) { h_align_ = a; }
 
 protected:
   std::string text_;

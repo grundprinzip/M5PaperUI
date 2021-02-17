@@ -9,27 +9,46 @@ void setup() {
 
   M5.begin();
   M5.EPD.SetRotation(90);
+  M5.TP.SetRotation(90);
   M5.EPD.Clear(true);
   M5.RTC.begin();
 
   // put your setup code here, to run once:
-  ctx = std::make_shared<WidgetContext>(&(M5.EPD));
-  auto frame = Frame::Create(10, 50, 300, 200);
-  frame->UpdateMode(UPDATE_MODE_GC16);
+  ctx = std::make_shared<WidgetContext>();
+  // 540 x 960
+  auto frame = Frame::Create(0, 0, 540, 960);
+  frame->UpdateMode(UPDATE_MODE_NONE);
 
-  //auto w = Widget::Create(0, 0, 100, 100);
-  auto w = Label::Create(0, 0, 100, 100, "Hello World there is");
+  auto p = Paint::Create(10, 10, 520, 900);
+  frame->AddWidget(p);
 
-    //w->BackgroundColor(Grayscale::G5);
-  //w->BorderColor(Grayscale::G15);
-  //w->Style(WidgetStyle::FILL);
+  /* auto l = Label::Create(10, 300, 200, 100, "Hello World there is", 4);
+  frame->AddWidget(l);
 
+  // Should be a small box
+  auto w = Widget::Create(50, 50, 50, 50);
+  w->BackgroundColor(Grayscale::G15);
+  w->Style(WidgetStyle::BORDER);
+  w->BorderColor(Grayscale::G15);
   frame->AddWidget(w);
-  ctx->AddFrame(frame);
 
+
+
+  auto b = WButton::Create(50, 500, 200, 200, "Button");
+  b->Style(WidgetStyle::BORDER);
+  b->BorderColor(Grayscale::G15);
+  frame->AddWidget(b);
+
+  auto w = Widget::Create(50, 50, 50, 50);
+  w->BackgroundColor(Grayscale::G15);
+  w->Style(WidgetStyle::BORDER);
+  w->BorderColor(Grayscale::G15);
+  frame->AddWidget(w); */
+
+  ctx->AddFrame(frame);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  WidgetMainLoop(ctx);
+  ctx->Draw();
 }
