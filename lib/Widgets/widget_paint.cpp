@@ -4,7 +4,6 @@ void Paint::Init() {
   log_d("New Canvas %d x %d", width_, height_);
   canvas_.createCanvas(width_, height_);
   Widget::Init();
-  canvas_.drawString("XXX", 100, 100);
 }
 
 bool Paint::EventInside(int16_t x, int16_t y) const {

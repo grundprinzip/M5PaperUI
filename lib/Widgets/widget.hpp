@@ -52,6 +52,9 @@ public:
   // once for the widget.
   void HandleEvent(TouchEvent evt);
 
+  // Replace the old canvas with a new one.
+  void SetCanvas(M5EPD_Canvas c) { canvas_ = c; }
+
 protected:
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}

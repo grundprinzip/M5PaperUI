@@ -19,8 +19,8 @@ void setup() {
   auto frame = Frame::Create(0, 0, 540, 960);
   frame->UpdateMode(UPDATE_MODE_NONE);
 
-  //auto p = Paint::Create(10, 10, 520, 900);
-  //frame->AddWidget(p);
+  // auto p = Paint::Create(10, 10, 520, 900);
+  // frame->AddWidget(p);
 
   /* auto l = Label::Create(10, 300, 200, 100, "Hello World there is", 4);
   frame->AddWidget(l);
