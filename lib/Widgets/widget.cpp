@@ -8,25 +8,19 @@ void Widget::Init() {
   if (widget_style_.ShouldDraw(WidgetStyle::BORDER)) {
     log_d("Drawing outline");
     canvas_.drawFastHLine(0, 0, width_, border_color_.toInt());
-    canvas_.drawFastHLine(0, height_ - 1, width_,
-                          border_color_.toInt());
+    canvas_.drawFastHLine(0, height_ - 1, width_, border_color_.toInt());
     canvas_.drawFastVLine(0, 0, height_, border_color_.toInt());
-    canvas_.drawFastVLine(width_ - 1, 0, height_,
-                          border_color_.toInt());
+    canvas_.drawFastVLine(width_ - 1, 0, height_, border_color_.toInt());
   } else if (widget_style_.ShouldDraw(WidgetStyle::FILL_W_BORDER)) {
     log_d("Drawing fill and border");
     canvas_.drawFastHLine(0, 0, width_, border_color_.toInt());
-    canvas_.drawFastHLine(0, height_ - 1, width_,
-                          border_color_.toInt());
+    canvas_.drawFastHLine(0, height_ - 1, width_, border_color_.toInt());
     canvas_.drawFastVLine(0, 0, height_, border_color_.toInt());
-    canvas_.drawFastVLine(width_ - 1, 0, height_,
-                          border_color_.toInt());
-    canvas_.fillRect(1, 1, width_ - 2, height_ - 2,
-                     background_color_.toInt());
+    canvas_.drawFastVLine(width_ - 1, 0, height_, border_color_.toInt());
+    canvas_.fillRect(1, 1, width_ - 2, height_ - 2, background_color_.toInt());
   } else if (widget_style_.ShouldDraw(WidgetStyle::FILL)) {
     log_d("Drawing fill");
-    canvas_.fillRect(0, 0, width_, height_,
-                     background_color_.toInt());
+    canvas_.fillRect(0, 0, width_, height_, background_color_.toInt());
   }
 }
 
@@ -46,14 +40,11 @@ void Widget::Draw() {
 
 void Widget::BackgroundColor(Grayscale c) { background_color_ = c; }
 
-
-void Widget::RegisterHandler(handler_fun_t f) {
-  handlers_.push_back(f);
-}
+void Widget::RegisterHandler(handler_fun_t f) { handlers_.push_back(f); }
 
 void Widget::HandleEvent(TouchEvent evt) {
   InternalEventHandler(evt);
-  for (const auto& h : handlers_) {
+  for (const auto &h : handlers_) {
     h(evt);
   }
 }

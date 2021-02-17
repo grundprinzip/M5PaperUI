@@ -1,8 +1,7 @@
 #include "widget_button.hpp"
 
 bool WButton::EventInside(int16_t x, int16_t y) const {
-  log_d("%d < %d < %d; %d < %d < %d", 0, x, width_, 0, y,
-        height_);
+  log_d("%d < %d < %d; %d < %d < %d", 0, x, width_, 0, y, height_);
   return x_offset_ <= x && x < (x_offset_ + width_) && y_offset_ <= y &&
          y < (y_offset_ + height_);
 }

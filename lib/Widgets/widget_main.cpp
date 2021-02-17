@@ -3,7 +3,7 @@
 #include "widget_main.hpp"
 
 void WidgetContext::Draw() {
-  const auto& top_view = view_stack_.top();
+  const auto &top_view = view_stack_.top();
 
   if (M5.TP.avaliable()) {
     M5.TP.update();
@@ -48,5 +48,4 @@ void WidgetContext::Draw() {
     }
   }
   top_view->Draw();
-
 }
