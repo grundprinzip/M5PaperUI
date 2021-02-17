@@ -28,6 +28,16 @@ public:
     return std::make_shared<Widget>(x_offset, y_offset, width, height);
   }
 
+  static ptr_t Create(int16_t x_offset, int16_t y_offset, int16_t width,
+                      int16_t height, std::function<void(Widget*)> mod) {
+    auto w = std::make_shared<Widget>(x_offset, y_offset, width, height);
+    // Call the handler to make modifications easier
+    mod(w.get());
+    return w;
+  }
+
+
+
   Widget(int16_t x_offset, int16_t y_offset, int16_t width, int16_t height)
       : width_(width), height_(height), x_(x_offset), y_(y_offset),
         canvas_(new M5EPD_Canvas(&M5.EPD)) {
@@ -87,6 +97,8 @@ public:
   inline bool dirty() const { return view_dirty_; }
 
   inline Point position() const { return {x_, y_}; }
+
+  inline void BorderWidth(int16_t w) { border_width_ = w;}
 
 protected:
   // Helper method that allows a widget to response to any event.

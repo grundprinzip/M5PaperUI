@@ -75,7 +75,7 @@ protected:
   int16_t height_;
 
   /// Update mode for this widget.
-  m5epd_update_mode_t update_mode_;
+  m5epd_update_mode_t update_mode_ = UPDATE_MODE_NONE;
 
   /// The list of all widgets that belong to this frame.
   std::vector<std::shared_ptr<Widget>> widgets_;

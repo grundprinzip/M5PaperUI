@@ -1,7 +1,9 @@
 #include <Arduino.h>
 #include <M5EPD.h>
 
+
 #include "widgetlib.hpp"
+#include "main_window.hpp"
 
 WidgetContext::ptr_t ctx;
 
@@ -13,12 +15,10 @@ void setup() {
   M5.EPD.Clear(true);
   M5.RTC.begin();
 
-  M5EPD_Canvas c(&M5.EPD);
-
   // put your setup code here, to run once:
   ctx = std::make_shared<WidgetContext>();
   // 540 x 960
-  auto frame = Frame::Create(50, 50, 300, 600);
+  /* auto frame = Frame::Create(50, 50, 300, 600);
   frame->UpdateMode(UPDATE_MODE_NONE);
 
   // auto p = Paint::Create(10, 10, 520, 900);
@@ -46,7 +46,7 @@ void setup() {
   auto w2 = Widget::Create(0, 0, 300, 600);
   w2->Style(WidgetStyle::BORDER);
   w2->BorderColor(Grayscale::GS_BLACK);
-  frame->AddWidget(w2);
+  frame->AddWidget(w2); */
 
   /*
     // Should be a small box
@@ -69,7 +69,9 @@ void setup() {
     w->BorderColor(Grayscale::G15);
     frame->AddWidget(w); */
 
-  ctx->AddFrame(frame);
+  //ctx->AddFrame(frame);
+  MainWindow win;
+  win.Init(ctx);
 }
 
 void loop() {
