@@ -22,7 +22,7 @@ public:
   using ptr_t = std::shared_ptr<Frame>;
 
   /// Initialize the Frame.
-  Frame() {}
+  Frame() : canvas_(&M5.EPD) {}
 
   static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h) {
     const auto &ptr = std::make_shared<Frame>();
@@ -33,8 +33,11 @@ public:
     return ptr;
   }
 
+  /// Initializes all views that have been added to the frame.
   void Init();
 
+  /// Is called to draw all view elements. View elements are only drawn if
+  /// dirty.
   void Draw();
 
   /// Allows setting the update mode for the display. Different update modes
@@ -48,12 +51,21 @@ public:
   /// Return the update mode for the frame.
   m5epd_update_mode_t update_mode() const { return update_mode_; }
 
+  /// Children can update the view state of the frame to require re-drawing the
+  /// whole screen.
   inline bool NeedsRedraw() { return state_ == WidgetState::PRE; }
 
+  /// Helper function that will flip the flag and require a redraw of the canvas
+  /// of the frame.
   inline void RequireRedraw() { state_ = WidgetState::PRE; }
 
+  /// This function is called by the UI main loop when an event is executed. If
+  /// the function returns true, this frame can respond to the event.
   bool EventInside(int16_t x, int16_t y) const;
 
+  /// This function is called by the UI main loop to handle a specific touch
+  /// event. The touch event contains necessary information about the state of
+  /// the touch and some of its raw parameters
   void HandleEvent(TouchEvent evt);
 
 protected:
@@ -69,4 +81,12 @@ protected:
   std::vector<std::shared_ptr<Widget>> widgets_;
 
   WidgetState state_ = WidgetState::PRE;
+
+  /// This is a shared canvas. When used, it is pushed first before any other
+  /// canvas is used. A shared canvas is used to allow placement of multiple
+  /// widgets at the same time. The reason to separate between shared and
+  /// non-shared canvas is that a canvas can only be fully updated. When partial
+  /// updates are needed like in a text box or button, an independent canvas
+  /// should be used.
+  M5EPD_Canvas canvas_;
 };

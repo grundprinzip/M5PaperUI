@@ -2,7 +2,7 @@
 
 void Paint::Init() {
   log_d("New Canvas %d x %d", width_, height_);
-  canvas_.createCanvas(width_, height_);
+  canvas_->createCanvas(width_, height_);
   Widget::Init();
 }
 
@@ -23,7 +23,7 @@ void Paint::InternalEventHandler(TouchEvent evt) {
   // log_d("Drawing: %d %s", last_, evt.str().c_str());
   for (int16_t i = 0; i < 10; ++i) {
     for (int16_t j = 0; j < 10; ++j) {
-      canvas_.drawPixel(evt.x2 + i, evt.y2 + j, Grayscale::G15);
+      canvas_->drawPixel(evt.x2 + i, evt.y2 + j, Grayscale::G15);
     }
   }
   // canvas_.drawString("X", evt.x2, evt.y2);

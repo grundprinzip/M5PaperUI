@@ -1,14 +1,10 @@
 #include "widget_label.hpp"
 
 void Label::Init() {
-  if (needs_new_canvas_) {
-    log_d("New Canvas %d x %d", width_, height_);
-    canvas_.createCanvas(width_, height_);
-  }
-  canvas_.setTextDatum(convert_alignment());
-  canvas_.setTextSize(text_size_);
+  canvas_->setTextDatum(convert_alignment());
+  canvas_->setTextSize(text_size_);
   // Default the text color to Black.
-  canvas_.setTextColor(Grayscale::G15);
+  canvas_->setTextColor(Grayscale::G15);
 
   // if the widget is drawn with border, we need to adjust the drawing cursor
   // position.
@@ -19,13 +15,7 @@ void Label::Init() {
   }
   // The canvas is created according to the x and y positions, which means, only
   // border adjustment is necessary.
-  canvas_.drawString(text_.c_str(), border_offset, border_offset);
-}
-
-void Label::Draw() {
-  // Widget::Draw();
-  log_d("Drawing label at %d %d", x_offset_, y_offset_);
-  canvas_.pushCanvas(x_offset_, y_offset_, parent_->update_mode());
+  canvas_->drawString(text_.c_str(), border_offset, border_offset);
 }
 
 uint8_t Label::convert_alignment() const {

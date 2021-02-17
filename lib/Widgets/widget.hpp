@@ -18,20 +18,31 @@ public:
   // Function pointer to the handler
   using handler_fun_t = std::function<void(TouchEvent)>;
 
+  struct Point {
+    int16_t x;
+    int16_t y;
+  };
+
   static ptr_t Create(int16_t x_offset, int16_t y_offset, int16_t width,
                       int16_t height) {
     return std::make_shared<Widget>(x_offset, y_offset, width, height);
   }
 
   Widget(int16_t x_offset, int16_t y_offset, int16_t width, int16_t height)
-      : width_(width), height_(height), x_offset_(x_offset),
-        y_offset_(y_offset), canvas_(&M5.EPD) {}
+      : width_(width), height_(height), x_(x_offset), y_(y_offset),
+        canvas_(new M5EPD_Canvas(&M5.EPD)) {
+    // Create a new canvas for this on screen component.
+    canvas_->createCanvas(width_, height_);
+  }
 
-  virtual ~Widget() {}
+  virtual ~Widget() {
+    if (has_own_canvas_)
+      delete canvas_;
+  }
 
   virtual void Init();
 
-  virtual void Draw();
+  virtual bool Draw();
 
   inline void Style(WidgetStyle style) { widget_style_ = style; }
 
@@ -53,22 +64,46 @@ public:
   void HandleEvent(TouchEvent evt);
 
   // Replace the old canvas with a new one.
-  void SetCanvas(M5EPD_Canvas c) { canvas_ = c; }
+  void SetCanvas(M5EPD_Canvas *c) {
+    delete canvas_;
+    canvas_ = c;
+    has_own_canvas_ = false;
+  }
+
+  /// When the widget uses it's onw canvas, we need to convert the relative
+  /// positioning of the elements that are drawn to absolute positions. This
+  /// means that the x/y positions are reset and the relative positions adjusted
+  /// by its old values and the values of the parameters.
+  void UpdateRelativePosition(int16_t relative_x, int16_t relative_y) {
+    has_own_canvas_ = true;
+    x_offset_ = relative_x + x_;
+    y_offset_ = relative_y + y_;
+  }
+
+  inline void NeedsOwnCanvas() { has_own_canvas_ = true; }
+
+  inline bool has_own_canvas() const { return has_own_canvas_; }
+
+  inline bool dirty() const { return view_dirty_; }
+
+  inline Point position() const { return {x_, y_}; }
 
 protected:
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
 
-  void NeedsNewCanvas(bool flag) { needs_new_canvas_ = flag; }
-
   // Width of the widgets.
   int16_t width_;
   // Height of the widget.
   int16_t height_;
+  // X position
+  int16_t x_;
+  // Y position
+  int16_t y_;
   // x offset of the origin of the screen.
-  int16_t x_offset_;
+  int16_t x_offset_ = 0;
   // y offset from the origin of the screen.
-  int16_t y_offset_;
+  int16_t y_offset_ = 0;
   // Background color
   Grayscale background_color_ = Grayscale::G0;
   // Border color
@@ -85,7 +120,10 @@ protected:
   // the display library.
   Frame *parent_;
 
-  M5EPD_Canvas canvas_;
+  M5EPD_Canvas *canvas_ = nullptr;
 
-  bool needs_new_canvas_ = true;
+  // By default a widget re-uses the canvas of the parent frame.
+  bool has_own_canvas_ = false;
+
+  bool view_dirty_ = true;
 };

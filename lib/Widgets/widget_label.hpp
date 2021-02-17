@@ -27,8 +27,6 @@ public:
 
   virtual void Init() override;
 
-  virtual void Draw() override;
-
   void VAlign(VAlignment a) { v_align_ = a; }
 
   void HAlign(HAlignment a) { h_align_ = a; }

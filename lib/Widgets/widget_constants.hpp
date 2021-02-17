@@ -6,6 +6,8 @@
 
 enum class EventType { NONE = 0, TOUCH_DOWN, TOUCH_UP, DOUBLE_TOUCH, DRAG };
 
+/// A TouchEvent stores the origin of the first touch and constantly updates the
+/// second point parameters as long as the drag is ongoing.
 struct TouchEvent {
   int16_t x1;
   int16_t y1;
@@ -45,6 +47,9 @@ public:
     G15 // Black
   };
 
+  static const Value GS_BLACK = Value::G15;
+  static const Value GS_WHITE = Value::G0;
+
   Grayscale() = default;
   constexpr Grayscale(Value val) : value_(val) {}
 
@@ -62,6 +67,7 @@ private:
   Value value_;
 };
 
+/// Helper class used to style a widget.
 class WidgetStyle {
 public:
   enum Value : int16_t { NONE = 0, BORDER = 1, FILL = 2, FILL_W_BORDER = 4 };
