@@ -16,7 +16,7 @@ class Widget;
 class View {
 public:
   using ptr_t = std::shared_ptr<View>;
-  virtual void Init(WidgetContext*) = 0;
+  virtual void Init(WidgetContext *) = 0;
   virtual void Draw() = 0;
 
   /// This function is called by the UI main loop when an event is executed. If
@@ -52,7 +52,7 @@ public:
   }
 
   /// Initializes all views that have been added to the frame.
-  void Init(WidgetContext*) override;
+  void Init(WidgetContext *) override;
 
   /// Is called to draw all view elements. View elements are only drawn if
   /// dirty.

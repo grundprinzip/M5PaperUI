@@ -18,7 +18,7 @@ void Frame::AddWidget(const Widget::ptr_t &w) {
   widgets_.push_back(w);
 }
 
-void Frame::Init(WidgetContext*) {
+void Frame::Init(WidgetContext *) {
   canvas_.createCanvas(width_, height_);
   for (const auto &w : widgets_) {
     w->Init();

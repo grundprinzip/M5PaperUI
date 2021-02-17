@@ -1,6 +1,6 @@
 #include "main_window.hpp"
 
-void MainWindow::Init(WidgetContext* ctx) {
+void MainWindow::Init(WidgetContext *ctx) {
 
   top_bar_ = Frame::Create(0, 0, 540, 40);
   top_bar_->UpdateMode(UPDATE_MODE_DU);
@@ -14,7 +14,7 @@ void MainWindow::Init(WidgetContext* ctx) {
   top_bar_->AddWidget(border);
 
   // Time
-  auto w_time = Label::Create(220, 10,100, 25, "09:32", 2);
+  auto w_time = Label::Create(220, 10, 100, 25, "09:32", 2);
   w_time->HAlign(Label::MIDDLE);
   top_bar_->AddWidget(w_time);
 
@@ -23,7 +23,7 @@ void MainWindow::Init(WidgetContext* ctx) {
   bottom_bar_ = Frame::Create(0, 880, 540, 80);
   bottom_bar_->UpdateMode(UPDATE_MODE_DU);
   // Bottom bar
-  auto bot_border = Widget::Create(0, 0, 540, 80, [](Widget* w){
+  auto bot_border = Widget::Create(0, 0, 540, 80, [](Widget *w) {
     w->Style(WidgetStyle::BORDER);
     w->BorderColor(Grayscale::GS_BLACK);
     w->BorderWidth(3);
@@ -44,7 +44,6 @@ void MainWindow::Init(WidgetContext* ctx) {
   bottom_bar_->AddWidget(home);
 
   bottom_bar_->Init(ctx);
-
 }
 
 void MainWindow::Draw() {
@@ -53,11 +52,14 @@ void MainWindow::Draw() {
 }
 
 bool MainWindow::EventInside(int16_t x, int16_t y) const {
-  if (top_bar_->EventInside(x, y)) return true;
-  return bottom_bar_->EventInside(x,y);
+  if (top_bar_->EventInside(x, y))
+    return true;
+  return bottom_bar_->EventInside(x, y);
 }
 
 void MainWindow::HandleEvent(TouchEvent evt) {
-  if (top_bar_->EventInside(evt.x1, evt.y1)) top_bar_->HandleEvent(evt);
-  if (bottom_bar_->EventInside(evt.x1, evt.y1)) bottom_bar_->HandleEvent(evt);
+  if (top_bar_->EventInside(evt.x1, evt.y1))
+    top_bar_->HandleEvent(evt);
+  if (bottom_bar_->EventInside(evt.x1, evt.y1))
+    bottom_bar_->HandleEvent(evt);
 }

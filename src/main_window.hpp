@@ -2,10 +2,10 @@
 
 #include "widgetlib.hpp"
 
-class MainWindow : public View{
+class MainWindow : public View {
 
 public:
-  void Init(WidgetContext* ctx);
+  void Init(WidgetContext *ctx);
 
   void Draw() override;
 
