@@ -5,7 +5,14 @@ bool WButton::EventInside(int16_t x, int16_t y) const {
   return 0 <= x && x < width_ && 0 <= y && y < height_;
 }
 
+void WButton::Reset() {
+  last_event_ = EventType::NONE;
+  Label::Reset();
+}
+
 void WButton::Init() {
+  // This is dangerous, becuase in theory, label is free to call super() as
+  // well.
   Widget::Init();
   Label::Init();
 

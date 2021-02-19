@@ -19,29 +19,43 @@ void Frame::AddWidget(const Widget::ptr_t &w) {
 }
 
 void Frame::Init(WidgetContext *) {
+  // If the view was already initialized and is added again to the context,
+  // Init() will be called again. However, in this case, we need to dirty all
+  // views and simply call Draw().
+  if (initialized_) {
+    log_d("Frame is already initialized.");
+    RequireRedraw();
+    for (const auto &w : widgets_) {
+      w->Reset();
+    }
+    return;
+  }
   canvas_.createCanvas(width_, height_);
   for (const auto &w : widgets_) {
     w->Init();
   }
+  initialized_ = true;
 }
 
-void Frame::Draw() {
-  bool is_view_dirty = NeedsRedraw();
-
-  if (is_view_dirty) {
+ScreenUpdateMode Frame::Draw() {
+  bool full_refresh = NeedsRedraw();
+  if (full_refresh) {
     log_d("Push Frame Canvas");
-    canvas_.pushCanvas(x_, y_, UPDATE_MODE_NONE);
+    canvas_.pushCanvas(x_, y_, update_mode_);
   }
 
+  ScreenUpdateMode mode = ScreenUpdateMode::NONE;
   for (const auto &w : widgets_) {
-    is_view_dirty |= w->Draw();
+    if (w->Draw())
+      mode = ScreenUpdateMode::PARTIAL;
   }
 
-  if (is_view_dirty) {
+  if (full_refresh) {
     log_d("Updating EPD");
     state_ = WidgetState::POST;
-    M5.EPD.UpdateFull(update_mode_);
+    return ScreenUpdateMode::FULL;
   }
+  return mode;
 }
 
 bool Frame::EventInside(int16_t x, int16_t y) const {

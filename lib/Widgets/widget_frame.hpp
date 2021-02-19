@@ -8,6 +8,23 @@
 
 enum class WidgetState { PRE, UDPATE, POST };
 
+class ScreenUpdateMode {
+public:
+  enum Value : int16_t { NONE = 0, PARTIAL = 1, FULL = 2 };
+  constexpr ScreenUpdateMode(Value val) : value_(val) {}
+  ScreenUpdateMode &operator|=(const ScreenUpdateMode &other) {
+    value_ = static_cast<Value>(static_cast<int16_t>(value_) |
+                                static_cast<int16_t>(other.value_));
+    return *this;
+  }
+  constexpr bool operator==(ScreenUpdateMode a) const {
+    return value_ == a.value_;
+  }
+
+private:
+  Value value_;
+};
+
 class WidgetContext;
 
 // Forward declaration.
@@ -17,7 +34,10 @@ class View {
 public:
   using ptr_t = std::shared_ptr<View>;
   virtual void Init(WidgetContext *) = 0;
-  virtual void Draw() = 0;
+
+  /// Returns true if a full update is needed or if a partial update was done
+  /// manually.
+  virtual ScreenUpdateMode Draw() = 0;
 
   /// This function is called by the UI main loop when an event is executed. If
   /// the function returns true, this frame can respond to the event.
@@ -39,6 +59,19 @@ class Frame : public View {
 public:
   using ptr_t = std::shared_ptr<Frame>;
 
+  struct Rect {
+    int16_t x;
+    int16_t y;
+    int16_t w;
+    int16_t h;
+
+    std::string str() {
+      std::ostringstream buf("Rect<");
+      buf << "x=" << x << ",y=" << y << ",w=" << w << ",h=" << h << ">";
+      return buf.str();
+    }
+  };
+
   /// Initialize the Frame.
   Frame() : canvas_(&M5.EPD) {}
 
@@ -56,7 +89,7 @@ public:
 
   /// Is called to draw all view elements. View elements are only drawn if
   /// dirty.
-  void Draw() override;
+  ScreenUpdateMode Draw() override;
 
   /// Allows setting the update mode for the display. Different update modes
   /// have different properties with regards to refresh time and ghosting on the
@@ -81,6 +114,8 @@ public:
 
   void HandleEvent(TouchEvent evt) override;
 
+  Rect dimension() const { return {x_, y_, width_, height_}; }
+
 protected:
   int16_t x_;
   int16_t y_;
@@ -102,4 +137,6 @@ protected:
   /// updates are needed like in a text box or button, an independent canvas
   /// should be used.
   M5EPD_Canvas canvas_;
+
+  bool initialized_ = false;
 };

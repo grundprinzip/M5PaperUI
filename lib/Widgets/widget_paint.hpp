@@ -13,6 +13,7 @@ public:
 
   static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h) {
     const auto &ptr = std::make_shared<Paint>(x, y, w, h);
+    ptr->NeedsOwnCanvas();
     return ptr;
   }
 

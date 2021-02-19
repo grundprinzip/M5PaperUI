@@ -1,6 +1,7 @@
 #include "widget_label.hpp"
 
 void Label::Init() {
+  Widget::Init();
   canvas_->setTextDatum(convert_alignment());
   canvas_->setTextSize(text_size_);
   // Default the text color to Black.
@@ -11,13 +12,14 @@ void Label::Init() {
   int16_t border_offset = 0;
   if (widget_style_ == WidgetStyle::BORDER ||
       widget_style_ == WidgetStyle::FILL_W_BORDER) {
-    border_offset += border_width_ * 20;
+    border_offset += padding_;
   }
   // The canvas is created according to the x and y positions, which means, only
   // border adjustment is necessary.
   int16_t x = has_own_canvas_ ? 0 : x_;
   int16_t y = has_own_canvas_ ? 0 : y_;
 
+  log_d("Label offset %d %d", border_offset, widget_style_);
   canvas_->drawString(text_.c_str(), x + border_offset, y + border_offset);
 }
 

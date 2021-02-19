@@ -40,6 +40,8 @@ public:
 
   virtual void InternalEventHandler(TouchEvent evt) override;
 
+  virtual void Reset() override;
+
 protected:
   EventType last_event_ = EventType::NONE;
 

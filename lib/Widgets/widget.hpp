@@ -100,6 +100,12 @@ public:
 
   inline void BorderWidth(int16_t w) { border_width_ = w;}
 
+  inline int16_t padding() const { return padding_; }
+
+  inline void Padding(int16_t p) { padding_ = p; }
+
+  inline virtual void Reset() { view_dirty_ = true; }
+
 protected:
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
@@ -138,4 +144,7 @@ protected:
   bool has_own_canvas_ = false;
 
   bool view_dirty_ = true;
+
+  /// Padding between the border and the content.
+  int16_t padding_ = 0;
 };

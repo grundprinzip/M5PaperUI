@@ -35,8 +35,8 @@ void Widget::Init() {
 
 bool Widget::Draw() {
   if (view_dirty_) {
-    log_d("Drawing widget at %d %d %d %d %d", x_, x_offset_, y_, y_offset_,
-          has_own_canvas_);
+    log_d("Drawing widget at %d %d %d %d %d %d", x_, x_offset_, y_, y_offset_,
+          has_own_canvas_, parent_->update_mode());
     if (has_own_canvas_) {
       // Only some update modes support grayscale display.
       auto update_mode = parent_->update_mode();
