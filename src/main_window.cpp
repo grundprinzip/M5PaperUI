@@ -1,4 +1,5 @@
 #include "main_window.hpp"
+#include "image_resources.h"
 
 void MainWindow::InitializeTopBar(const WidgetContext::ptr_t &ctx) {
   top_bar_ = Frame::Create(0, 0, 540, 40);
@@ -76,12 +77,12 @@ void MainWindow::InitializeHomeScreen(const WidgetContext::ptr_t &ctx) {
       }));
 
   // Add the buttons for the Applications
-  auto paint = WButton::Create(10, 50, 150, 150, "Paint");
-  paint->TextSize(3);
+  auto paint = WIconButton::Create(10, 50, 130, 130, PAINTBRUSH, 128, 128);
   paint->Style(WidgetStyle::BORDER);
   paint->BorderColor(Grayscale::G15);
-  paint->Padding(20);
   paint->RegisterHandler([home_dim, ctx](TouchEvent e) {
+    if (e.type != EventType::TOUCH_UP)
+      return;
     ctx->PopFrame();
     // Create the paint frame
     auto pf = Frame::Create(home_dim.x, home_dim.y, home_dim.w, home_dim.h);
@@ -93,6 +94,10 @@ void MainWindow::InitializeHomeScreen(const WidgetContext::ptr_t &ctx) {
     ctx->AddFrame(pf);
   });
   home_screen_->AddWidget(paint);
+
+  auto paint_label = Label::Create(10, 50 + 130 + 10, 130, 20, "Paint");
+  paint_label->HAlign(Label::LEFT);
+  home_screen_->AddWidget(paint_label);
 
   ctx->AddFrame(home_screen_);
 }

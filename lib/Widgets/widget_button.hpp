@@ -47,3 +47,41 @@ protected:
 
   M5EPD_Canvas downCanvas_;
 };
+
+class WIconButton : public WButton {
+public:
+  using ptr_t = std::shared_ptr<WIconButton>;
+
+  WIconButton(int16_t x, int16_t y, int16_t width, int16_t height,
+              const unsigned char *img, int16_t img_w, int16_t img_h)
+      : WButton(x, y, width, height, ""), downCanvas_(&M5.EPD), img_(img),
+        img_w_(img_w), img_h_(img_h) {}
+
+  static ptr_t Create(int16_t x, int16_t y, int16_t width, int16_t height,
+                      const unsigned char *img, int16_t img_w, int16_t img_h) {
+    const auto &p =
+        std::make_shared<WIconButton>(x, y, width, height, img, img_w, img_h);
+    p->NeedsOwnCanvas();
+    p->VAlign(Label::BOTTOM);
+    return p;
+  }
+
+  virtual ~WIconButton() {}
+
+  virtual void Init() override;
+
+  virtual bool Draw() override;
+
+  bool EventInside(int16_t x, int16_t y) const override;
+
+  virtual void InternalEventHandler(TouchEvent evt) override;
+
+  virtual void Reset() override;
+
+private:
+  EventType last_event_ = EventType::NONE;
+  M5EPD_Canvas downCanvas_;
+  const unsigned char *img_;
+  int16_t img_w_;
+  int16_t img_h_;
+};

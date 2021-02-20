@@ -20,5 +20,6 @@ void Paint::InternalEventHandler(TouchEvent evt) {
     view_dirty_ = true;
     last_ = now;
   }
-  canvas_->fillRect(evt.x2, evt.y2, 10, 10, Grayscale::GS_BLACK);
+  canvas_->fillRect(evt.x2 - x_offset_, evt.y2 - y_offset_, 10, 10,
+                    Grayscale::GS_BLACK);
 }

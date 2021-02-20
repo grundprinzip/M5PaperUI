@@ -25,6 +25,8 @@ public:
     return ptr;
   }
 
+  virtual void Text(const std::string &s) { text_ = s; }
+
   virtual void Init() override;
 
   void VAlign(VAlignment a) { v_align_ = a; }
@@ -34,12 +36,11 @@ public:
   inline void TextSize(int16_t s) { text_size_ = s; }
 
 protected:
+  uint8_t convert_alignment() const;
+
   std::string text_;
   int16_t text_size_;
 
   HAlignment h_align_ = HAlignment::LEFT;
   VAlignment v_align_ = VAlignment::TOP;
-
-private:
-  uint8_t convert_alignment() const;
 };
