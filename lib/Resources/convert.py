@@ -1,6 +1,7 @@
 import sys
 from PIL import Image, ImageOps
 import os.path
+import fs
 
 GRAYSCALE_MAP = [0 for i in range(256)]
 
@@ -25,26 +26,33 @@ def getBitmap(img):
 
 
 def main():
-    num_args = len(sys.argv) - 1
-    dstf = open('image_resources.h', 'w+')
-    dstf.write("#pragma once\n\n")
 
-    for x in range(num_args):
-        file_name = sys.argv[x + 1]
-        final = Image.open(file_name)
+  this_dir = os.path.dirname(__file__)
+  src_dir = os.path.join(this_dir, "..", "..", "images")
 
-        ident = "_".join(os.path.basename(file_name).split(".")[:-1]).upper()
-        dstf.write("const unsigned char %s [] PROGMEM = {\n" % (ident))
-        buffer = getBitmap(final)
+  dstf = open('image_resources.h', 'w+')
+  dstf.write("#pragma once\n")
+
+
+  for f in fs.list(path=src_dir):
+    final = Image.open(f)
+    ident = "_".join(os.path.basename(f).split(".")[:-1]).upper()
+    dstf.write("\nconst unsigned char %s[] PROGMEM = {\n" % (ident))
+    buffer = getBitmap(final)
+    cnt = 0
+    for byte in buffer:
+      cnt += 1
+      if cnt == 1:
+        dstf.write("    ")
+        dstf.write('0x%02X' % byte)
+      elif cnt == 12:
         cnt = 0
-        for byte in buffer:
-            dstf.write('0x%02X, ' % byte)
-            cnt += 1
-            if cnt == 15:
-                cnt = 0
-                dstf.write('\n\t')
+        dstf.write(', 0x%02X,' % byte)
+        dstf.write('\n')
+      else:
+        dstf.write(', 0x%02X' % byte)
+    dstf.write('};\n')
 
-        dstf.write('};\n\n')
 
 
 if __name__ == "__main__":
