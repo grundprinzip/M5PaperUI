@@ -13,14 +13,16 @@ HomeScreen::HomeScreen(int16_t x, int16_t y, int16_t w, int16_t h) : Frame() {
 void HomeScreen::CreateAppButton(int16_t x, int16_t y, const std::string &name,
                                  const uint8_t *icon,
                                  WButton::handler_fun_t fun) {
-  auto button = WIconButton::Create(x, y, 130, 130, icon, 128, 128);
+  auto button = WIconButton::Create(x, y, 116, 116, icon, 96, 96);
   button->Style(WidgetStyle::BORDER);
   button->BorderColor(Grayscale::GS_BLACK);
   button->RegisterHandler(fun);
   button->Name(name);
+  button->Padding(10);
+  button->BorderWidth(3);
   AddWidget(button);
 
-  auto paint_label = Label::Create(x, y + 130 + 10, 130, 20, name);
+  auto paint_label = Label::Create(x, y + 116 + 10, 116, 20, name);
   paint_label->HAlign(Label::MIDDLE);
   paint_label->Name(name);
   AddWidget(paint_label);
@@ -35,7 +37,7 @@ void HomeScreen::Prepare(WidgetContext *ctx) {
     w->Name("MainBorder");
   }));
 
-  CreateAppButton(10, 30, "Paint", PAINTBRUSH, [home_dim, ctx](TouchEvent e) {
+  CreateAppButton(10, 30, "Paint", PAINTBRUSH_96_96, [home_dim, ctx](TouchEvent e) {
     if (e.type != EventType::TOUCH_UP)
       return;
     ctx->PopFrame();

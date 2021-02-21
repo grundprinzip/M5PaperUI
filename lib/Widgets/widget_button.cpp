@@ -45,7 +45,7 @@ void WButton::InternalEventHandler(TouchEvent evt) {
 void WIconButton::Init() {
   Widget::Init();
 
-  canvas_->pushImage(border_width_, border_width_, img_w_, img_h_, img_);
+  canvas_->pushImage(padding_, padding_, img_w_, img_h_, img_);
 
   downCanvas_.createCanvas(width_, height_);
   downCanvas_.fillRect(0, 0, width_, height_, 15);
