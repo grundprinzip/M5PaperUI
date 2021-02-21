@@ -87,3 +87,5 @@ public:
 private:
   Value value_;
 };
+
+enum class BorderStyle { NONE, NORMAL, ROUND };

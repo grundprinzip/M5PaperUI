@@ -8,24 +8,62 @@ void Widget::Init() {
   int16_t y = has_own_canvas_ ? 0 : y_;
 
   if (widget_style_.ShouldDraw(WidgetStyle::BORDER)) {
+
     log_d("Drawing outline");
-    // Top
-    canvas_->drawFastHLine(x, y, width_, border_width_, border_color_.toInt());
-    // Bottom
-    canvas_->drawFastHLine(x, y + height_ - 1, width_, border_width_,
-                           border_color_.toInt());
-    // Left
-    canvas_->drawFastVLine(x, y, height_, border_width_, border_color_.toInt());
-    // Right
-    canvas_->drawFastVLine(x + width_ - 1, y, height_, border_width_,
-                           border_color_.toInt());
+    if (border_style_ == BorderStyle::ROUND) {
+      int16_t r = border_radius_;
+      int16_t w = width_;
+      int16_t h = width_;
+
+      canvas_->drawFastHLine(x + r, y, w - r - r, border_width_,
+                             border_color_.toInt()); // Top
+      canvas_->drawFastHLine(x + r, y + h - 1, w - r - r, border_width_,
+                             border_color_.toInt()); // Bottom
+      canvas_->drawFastVLine(x, y + r, h - r - r, border_width_,
+                             border_color_.toInt()); // Left
+      canvas_->drawFastVLine(x + w - 1, y + r, h - r - r, border_width_,
+                             border_color_.toInt()); // Right
+
+      // TOOD (assert radius < border width)
+      for (int16_t i = 0; i < border_width_; ++i) {
+        canvas_->drawCircleHelper(x + r, y + r, r - i, 1,
+                                  border_color_.toInt());
+        canvas_->drawCircleHelper(x + w - r - 1, y + r, r - i, 2,
+                                  border_color_.toInt());
+        canvas_->drawCircleHelper(x + w - r - 1, y + h - r - 1, r - i, 4,
+                                  border_color_.toInt());
+        canvas_->drawCircleHelper(x + r, y + h - r - 1, r - i, 8,
+                                  border_color_.toInt());
+      }
+    } else {
+      // Top
+      canvas_->drawFastHLine(x, y, width_, border_width_,
+                             border_color_.toInt());
+      // Bottom
+      canvas_->drawFastHLine(x, y + height_ - 1, width_, border_width_,
+                             border_color_.toInt());
+      // Left
+      canvas_->drawFastVLine(x, y, height_, border_width_,
+                             border_color_.toInt());
+      // Right
+      canvas_->drawFastVLine(x + width_ - 1, y, height_, border_width_,
+                             border_color_.toInt());
+    }
   }
 
   if (widget_style_.ShouldDraw(WidgetStyle::FILL_W_BORDER)) {
     log_d("Drawing fill and border");
-    canvas_->fillRect(x + border_width_, y + border_width_,
-                      width_ - (2 * border_width_),
-                      height_ - (2 * border_width_), background_color_.toInt());
+
+    if (border_style_ == BorderStyle::ROUND) {
+      canvas_->fillRoundRect(x + border_width_, y + border_width_,
+                             width_ - (2 * border_width_),
+                             height_ - (2 * border_width_), border_radius_,
+                             background_color_.toInt());
+    } else {
+      canvas_->fillRect(
+          x + border_width_, y + border_width_, width_ - (2 * border_width_),
+          height_ - (2 * border_width_), background_color_.toInt());
+    }
   }
 
   if (widget_style_.ShouldDraw(WidgetStyle::FILL)) {

@@ -4,9 +4,12 @@
 #include "binaryttf.h"
 #include "image_resources.h"
 #include "main_window.hpp"
+#include "settings.hpp"
 #include "widgetlib.hpp"
 
 WidgetContext::ptr_t ctx;
+
+Settings global_settings;
 
 // Prepare some stuff.
 void initializeSystem() {
@@ -18,23 +21,16 @@ void initializeSystem() {
   M5.EPD.Clear(true);
   M5.RTC.begin();
 
+  // NVS
+  Settings::Stats();
+
   // Loading Font
   M5EPD_Canvas font(&M5.EPD);
   font.loadFont(binaryttf, sizeof(binaryttf));
   font.createRender(26, 128);
   font.createRender(20, 128);
 
-  // Pre-Loading Images
-  /*const uint8_t* preload[] { PAINTBRUSH, SETTINGS_128_128 };
-  M5EPD_Canvas pld(&M5.EPD);
-  pld.createCanvas(128,128);
-  for (int i=0; i < 2; ++i) {
-    pld.pushImage(0,0, 128, 128, preload[i]);
-    pld.pushCanvas(220, 548, UPDATE_MODE_DU4 );
-  }*/
-
-  // Loading fonts
-
+  global_settings = Settings::Load();
   log_d("Done SysInit");
 }
 
@@ -43,7 +39,7 @@ void setup() {
   initializeSystem();
   // put your setup code here, to run once:
   ctx = std::make_shared<WidgetContext>();
-  auto win = std::make_shared<MainWindow>();
+  auto win = std::make_shared<MainWindow>(&global_settings);
   win->Start(ctx);
 }
 

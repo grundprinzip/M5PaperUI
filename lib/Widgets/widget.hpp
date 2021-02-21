@@ -110,6 +110,12 @@ public:
 
   inline std::string name() const { return name_; }
 
+  inline void SetBorderStyle(BorderStyle s) { border_style_ = s; }
+
+  inline BorderStyle border_style() const { return border_style_; }
+
+  inline void SetBorderRadius(int16_t r) { border_radius_ = r; }
+
 protected:
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
@@ -153,4 +159,9 @@ protected:
   int16_t padding_ = 0;
 
   std::string name_;
+
+  // If the border style is set to ROUND, defines the border radius.
+  int16_t border_radius_ = 5;
+
+  BorderStyle border_style_ = BorderStyle::NONE;
 };

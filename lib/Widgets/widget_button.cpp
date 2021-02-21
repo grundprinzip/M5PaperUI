@@ -18,7 +18,12 @@ void WButton::Init() {
   Widget::Init();
   Label::Init();
   downCanvas_.createCanvas(width_, height_);
-  downCanvas_.fillRect(0, 0, width_, height_, 15);
+
+  if (border_style_ == BorderStyle::ROUND) {
+    downCanvas_.fillRoundRect(0, 0, width_, height_, border_radius_, 15);
+  } else {
+    downCanvas_.fillRect(0, 0, width_, height_, 15);
+  }
 }
 
 bool WButton::Draw() {
@@ -44,11 +49,14 @@ void WButton::InternalEventHandler(TouchEvent evt) {
 
 void WIconButton::Init() {
   Widget::Init();
-
   canvas_->pushImage(padding_, padding_, img_w_, img_h_, img_);
 
   downCanvas_.createCanvas(width_, height_);
-  downCanvas_.fillRect(0, 0, width_, height_, 15);
+  if (border_style_ == BorderStyle::ROUND) {
+    downCanvas_.fillRoundRect(0, 0, width_, height_, border_radius_, 15);
+  } else {
+    downCanvas_.fillRect(0, 0, width_, height_, 15);
+  }
 }
 
 bool WIconButton::EventInside(int16_t x, int16_t y) const {

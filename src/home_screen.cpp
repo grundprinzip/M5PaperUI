@@ -15,11 +15,13 @@ void HomeScreen::CreateAppButton(int16_t x, int16_t y, const std::string &name,
                                  WButton::handler_fun_t fun) {
   auto button = WIconButton::Create(x, y, 116, 116, icon, 96, 96);
   button->Style(WidgetStyle::BORDER);
+  button->SetBorderStyle(BorderStyle::ROUND);
   button->BorderColor(Grayscale::GS_BLACK);
   button->RegisterHandler(fun);
   button->Name(name);
   button->Padding(10);
   button->BorderWidth(3);
+  button->SetBorderRadius(10);
   AddWidget(button);
 
   auto paint_label = Label::Create(x, y + 116 + 10, 116, 20, name);
@@ -30,26 +32,27 @@ void HomeScreen::CreateAppButton(int16_t x, int16_t y, const std::string &name,
 
 void HomeScreen::Prepare(WidgetContext *ctx) {
   auto home_dim = dimension();
-  AddWidget(Widget::Create(0, 0, home_dim.w - 1, home_dim.h - 1, [](Widget *w) {
-    w->Style(WidgetStyle::BORDER);
-    w->BorderColor(Grayscale::GS_BLACK);
-    w->BorderWidth(3);
-    w->Name("MainBorder");
-  }));
 
-  CreateAppButton(10, 30, "Paint", PAINTBRUSH_96_96, [home_dim, ctx](TouchEvent e) {
-    if (e.type != EventType::TOUCH_UP)
-      return;
-    ctx->PopFrame();
-    // Create the paint frame
-    auto pf = Frame::Create(home_dim.x, home_dim.y, home_dim.w, home_dim.h);
-    pf->UpdateMode(UPDATE_MODE_GC16);
-    auto wpaint = Paint::Create(0, 0, home_dim.w, home_dim.h);
-    wpaint->Style(WidgetStyle::BORDER);
-    wpaint->BorderColor(Grayscale::G15);
-    pf->AddWidget(wpaint);
-    ctx->AddFrame(pf);
-  });
+  CreateAppButton(
+      30, 30, "Paint", PAINTBRUSH_96_96, [home_dim, ctx](TouchEvent e) {
+        if (e.type != EventType::TOUCH_UP)
+          return;
+        ctx->PopFrame();
+        // Create the paint frame
+        auto pf = Frame::Create(home_dim.x, home_dim.y, home_dim.w, home_dim.h);
+        pf->UpdateMode(UPDATE_MODE_GC16);
+        auto wpaint = Paint::Create(0, 0, home_dim.w, home_dim.h);
+        wpaint->Style(WidgetStyle::BORDER);
+        wpaint->BorderColor(Grayscale::G15);
+        pf->AddWidget(wpaint);
+        ctx->AddFrame(pf);
+      });
+
+  CreateAppButton(30 + 116 + 50, 30, "Settings", SETTINGS_96_96,
+                  [](TouchEvent e) {});
+
+  CreateAppButton(30 + 2 * (116 + 50), 30, "Settings", SETTINGS_96_96,
+                  [](TouchEvent e) {});
 }
 
 void HomeScreen::Init(WidgetContext *ctx) {
