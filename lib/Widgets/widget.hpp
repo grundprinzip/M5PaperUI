@@ -106,6 +106,10 @@ public:
 
   inline virtual void Reset() { view_dirty_ = true; }
 
+  inline void Name(const std::string &n) { name_ = n; }
+
+  inline std::string name() const { return name_; }
+
 protected:
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
@@ -147,4 +151,6 @@ protected:
 
   /// Padding between the border and the content.
   int16_t padding_ = 0;
+
+  std::string name_;
 };

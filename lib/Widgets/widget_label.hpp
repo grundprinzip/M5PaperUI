@@ -20,7 +20,7 @@ public:
   virtual ~Label() {}
 
   static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h,
-                      const std::string &text, int16_t size = 3) {
+                      const std::string &text, int16_t size = 26) {
     const auto &ptr = std::make_shared<Label>(x, y, w, h, text, size);
     return ptr;
   }

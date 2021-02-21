@@ -85,7 +85,7 @@ public:
   }
 
   /// Initializes all views that have been added to the frame.
-  void Init(WidgetContext *) override;
+  virtual void Init(WidgetContext *) override;
 
   /// Is called to draw all view elements. View elements are only drawn if
   /// dirty.
@@ -116,6 +116,10 @@ public:
 
   Rect dimension() const { return {x_, y_, width_, height_}; }
 
+  inline void Name(const std::string n) { name_ = n; }
+
+  inline std::string name() const { return name_; }
+
 protected:
   int16_t x_;
   int16_t y_;
@@ -139,4 +143,6 @@ protected:
   M5EPD_Canvas canvas_;
 
   bool initialized_ = false;
+
+  std::string name_;
 };

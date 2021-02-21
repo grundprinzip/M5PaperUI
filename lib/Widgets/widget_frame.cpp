@@ -4,6 +4,7 @@
 #include "widget_frame.hpp"
 
 void Frame::AddWidget(const Widget::ptr_t &w) {
+  log_d("AddWidget - %s", w->name().c_str());
   w->ParentFrame(this);
 
   // If the widget uses it's own canvas, the relative position of the frame has
@@ -23,13 +24,14 @@ void Frame::Init(WidgetContext *) {
   // Init() will be called again. However, in this case, we need to dirty all
   // views and simply call Draw().
   if (initialized_) {
-    log_d("Frame is already initialized.");
+    log_d("Frame %s is already initialized.", name_.c_str());
     RequireRedraw();
     for (const auto &w : widgets_) {
       w->Reset();
     }
     return;
   }
+  log_d("Frame %s initializing.", name_.c_str());
   canvas_.createCanvas(width_, height_);
   for (const auto &w : widgets_) {
     w->Init();
@@ -40,6 +42,7 @@ void Frame::Init(WidgetContext *) {
 ScreenUpdateMode Frame::Draw() {
   bool full_refresh = NeedsRedraw();
   if (full_refresh) {
+    log_d("Drawing frame %s with %d widgets", name_.c_str(), widgets_.size());
     log_d("Push Frame Canvas");
     canvas_.pushCanvas(x_, y_, update_mode_);
   }

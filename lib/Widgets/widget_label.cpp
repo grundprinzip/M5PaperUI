@@ -1,4 +1,5 @@
 #include "widget_label.hpp"
+#include "Free_Fonts.h"
 
 void Label::Init() {
   Widget::Init();
@@ -6,6 +7,7 @@ void Label::Init() {
   canvas_->setTextSize(text_size_);
   // Default the text color to Black.
   canvas_->setTextColor(Grayscale::G15);
+  // canvas_->setFreeFont(FF17);
 
   // if the widget is drawn with border, we need to adjust the drawing cursor
   // position.
@@ -20,7 +22,21 @@ void Label::Init() {
   int16_t y = has_own_canvas_ ? 0 : y_;
 
   log_d("Label offset %d %d", border_offset, widget_style_);
-  canvas_->drawString(text_.c_str(), x + border_offset, y + border_offset);
+
+  // We have to adjust the drawing position by half of the width;
+  if (h_align_ == MIDDLE) {
+    x = x + border_offset + width_ / 2;
+  } else {
+    x += border_offset;
+  }
+
+  if (v_align_ == CENTER) {
+    y = y + border_offset + height_ / 2;
+  } else {
+    y += border_offset;
+  }
+
+  canvas_->drawString(text_.c_str(), x, y);
 }
 
 uint8_t Label::convert_alignment() const {
