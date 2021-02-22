@@ -19,6 +19,8 @@ public:
 
   virtual void Init() override;
 
+  void Reset() override;
+
   bool EventInside(int16_t x, int16_t y) const override;
 
   virtual void InternalEventHandler(TouchEvent evt) override;

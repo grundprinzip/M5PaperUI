@@ -62,7 +62,9 @@ public:
 
   inline void ParentFrame(Frame *f) { parent_ = f; }
 
-  virtual bool EventInside(int16_t x, int16_t y) const { return false; }
+  virtual bool EventInside(int16_t x, int16_t y) const {
+    return 0 <= x && x < width_ && 0 <= y && y < height_;
+  }
 
   // Register an external event handler for this widget. The external event
   // handler is called as soon as internal event handling is done.

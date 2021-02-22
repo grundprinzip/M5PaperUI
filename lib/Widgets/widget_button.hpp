@@ -36,8 +36,6 @@ public:
   /// pressed simply defaults to a black canvas.
   virtual bool Draw() override;
 
-  bool EventInside(int16_t x, int16_t y) const override;
-
   virtual void InternalEventHandler(TouchEvent evt) override;
 
   virtual void Reset() override;
@@ -71,8 +69,6 @@ public:
   virtual void Init() override;
 
   virtual bool Draw() override;
-
-  bool EventInside(int16_t x, int16_t y) const override;
 
   virtual void InternalEventHandler(TouchEvent evt) override;
 

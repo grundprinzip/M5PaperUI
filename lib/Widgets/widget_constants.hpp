@@ -21,7 +21,8 @@ struct TouchEvent {
   std::string str() {
     std::ostringstream buf;
     buf << "TouchEvent<x1=" << x1 << ",y1=" << y1 << ",x2=" << x2
-        << ",y2=" << y2 << ",type=" << static_cast<int>(type) << ">";
+        << ",y2=" << y2 << ",type=" << static_cast<int>(type)
+        << ",size=" << size << ">";
     return buf.str();
   }
 };

@@ -2,11 +2,6 @@
 
 #include "image_resources.h"
 
-bool WButton::EventInside(int16_t x, int16_t y) const {
-  log_d("%d < %d < %d; %d < %d < %d", 0, x, width_, 0, y, height_);
-  return 0 <= x && x < width_ && 0 <= y && y < height_;
-}
-
 void WButton::Reset() {
   last_event_ = EventType::NONE;
   Label::Reset();
@@ -57,11 +52,6 @@ void WIconButton::Init() {
   } else {
     downCanvas_.fillRect(0, 0, width_, height_, 15);
   }
-}
-
-bool WIconButton::EventInside(int16_t x, int16_t y) const {
-  log_d("%d < %d < %d; %d < %d < %d", 0, x, width_, 0, y, height_);
-  return 0 <= x && x < width_ && 0 <= y && y < height_;
 }
 
 void WIconButton::Reset() {
