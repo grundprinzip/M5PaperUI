@@ -18,8 +18,10 @@ void MainWindow::InitializeTopBar(const WidgetContext::ptr_t &ctx) {
   auto w_time = Label::Create(270, 10, 100, 25, "09:32", 20);
   w_time->HAlign(Label::MIDDLE);
   top_bar_->AddWidget(w_time);
+  top_bar_->Name("TopBarFrame");
 
-  ctx->AddFrame(top_bar_);
+  ctx->RegisterFrame(top_bar_);
+  ctx->PushFrame(top_bar_->name());
 }
 
 void MainWindow::InitializeBottomBar(const WidgetContext::ptr_t &ctx) {
@@ -45,7 +47,7 @@ void MainWindow::InitializeBottomBar(const WidgetContext::ptr_t &ctx) {
     if (evt.type == EventType::TOUCH_UP && !this->home_screen_->NeedsRedraw()) {
       log_d("Dropping frame");
       ctx->PopFrame();
-      ctx->AddFrame(this->home_screen_);
+      ctx->PushFrame("HomeScreenFrame");
     }
   });
   bottom_bar_->AddWidget(back);
@@ -57,8 +59,10 @@ void MainWindow::InitializeBottomBar(const WidgetContext::ptr_t &ctx) {
   home->HAlign(Label::MIDDLE);
   home->VAlign(Label::CENTER);
   bottom_bar_->AddWidget(home);
+  bottom_bar_->Name("BottomBarFrame");
 
-  ctx->AddFrame(bottom_bar_);
+  ctx->RegisterFrame(bottom_bar_);
+  ctx->PushFrame(bottom_bar_->name());
 }
 
 void MainWindow::InitializeHomeScreen(const WidgetContext::ptr_t &ctx) {
@@ -70,7 +74,9 @@ void MainWindow::InitializeHomeScreen(const WidgetContext::ptr_t &ctx) {
   home_screen_->UpdateMode(UPDATE_MODE_GC16);
   auto home_dim = home_screen_->dimension();
   log_d("Home Dim %s", home_dim.str().c_str());
-  ctx->AddFrame(home_screen_);
+  home_screen_->Name("HomeScreenFrame");
+  ctx->RegisterFrame(home_screen_);
+  ctx->PushFrame(home_screen_->name());
 }
 
 void MainWindow::Start(const WidgetContext::ptr_t &ctx) {

@@ -1,5 +1,6 @@
 #include "home_screen.hpp"
 #include "image_resources.h"
+#include "tictactoe_app.hpp"
 
 HomeScreen::HomeScreen(int16_t x, int16_t y, int16_t w, int16_t h) : Frame() {
   x_ = x;
@@ -7,7 +8,6 @@ HomeScreen::HomeScreen(int16_t x, int16_t y, int16_t w, int16_t h) : Frame() {
   width_ = w;
   height_ = h;
   update_mode_ = UPDATE_MODE_GC16;
-  name_ = "HomeScreen";
 }
 
 void HomeScreen::CreateAppButton(int16_t x, int16_t y, const std::string &name,
@@ -33,33 +33,38 @@ void HomeScreen::CreateAppButton(int16_t x, int16_t y, const std::string &name,
 void HomeScreen::Prepare(WidgetContext *ctx) {
   auto home_dim = dimension();
 
-  CreateAppButton(
-      30, 30, "Paint", PAINTBRUSH_96_96, [home_dim, ctx](TouchEvent e) {
-        if (e.type != EventType::TOUCH_UP)
-          return;
-        ctx->PopFrame();
-        // Create the paint frame
-        auto pf = Frame::Create(home_dim.x, home_dim.y, home_dim.w, home_dim.h);
-        pf->UpdateMode(UPDATE_MODE_GC16);
-        auto wpaint = Paint::Create(0, 0, home_dim.w, home_dim.h);
-        wpaint->Style(WidgetStyle::BORDER);
-        wpaint->BorderColor(Grayscale::G15);
-        pf->AddWidget(wpaint);
-        ctx->AddFrame(pf);
-      });
+  auto pf = Frame::Create(home_dim.x, home_dim.y, home_dim.w, home_dim.h);
+  pf->UpdateMode(UPDATE_MODE_GC16);
+  auto wpaint = Paint::Create(0, 0, home_dim.w, home_dim.h);
+  wpaint->Style(WidgetStyle::BORDER);
+  wpaint->BorderColor(Grayscale::G15);
+  pf->AddWidget(wpaint);
+  pf->Name("PaintFrame");
+  // TODO check retval
+  ctx->RegisterFrame(pf);
+
+  auto tf = TicTacToe::Create(home_dim.x, home_dim.y, home_dim.w, home_dim.h);
+  tf->UpdateMode(UPDATE_MODE_GC16);
+  tf->Name("TicTacToeFrame");
+  ctx->RegisterFrame(tf);
+
+  CreateAppButton(30, 30, "Paint", PAINTBRUSH_96_96, [ctx](TouchEvent e) {
+    if (e.type != EventType::TOUCH_UP)
+      return;
+    ctx->PopFrame();
+    ctx->PushFrame("PaintFrame");
+  });
 
   CreateAppButton(30 + 116 + 50, 30, "Settings", SETTINGS_96_96,
                   [](TouchEvent e) {});
 
-  CreateAppButton(30 + 2 * (116 + 50), 30, "Settings", SETTINGS_96_96,
-                  [](TouchEvent e) {});
+  CreateAppButton(30 + 2 * (116 + 50), 30, "Tic Tac Toe", SETTINGS_96_96,
+                  [home_dim, ctx](TouchEvent e) {
+                    if (e.type != EventType::TOUCH_UP)
+                      return;
+                    ctx->PopFrame();
+                    ctx->PushFrame("TicTacToeFrame");
+                  });
 }
 
-void HomeScreen::Init(WidgetContext *ctx) {
-  // The buttons need to be added before the frame is intialized.
-  if (!hs_initialized_) {
-    Prepare(ctx);
-    hs_initialized_ = true;
-  }
-  Frame::Init(ctx);
-}
+void HomeScreen::Init(WidgetContext *ctx) { Frame::Init(ctx); }

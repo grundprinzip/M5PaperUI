@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <memory>
 #include <sstream>
+#include <unordered_map>
 #include <vector>
 
 #include <M5EPD.h>
@@ -13,12 +14,26 @@ class WidgetContext {
 public:
   using ptr_t = std::shared_ptr<WidgetContext>;
 
-  /// Adds a new frame to the list of changes that are pushed at the end of the
-  /// drawing cycle. New views are assumed to require drawing.
-  void AddFrame(const View::ptr_t &f) {
-    log_d("Adding new frame.");
-    view_changes_.push_back(f);
-    f->Init(this);
+  // Push frame by name
+  void PushFrame(const std::string &n) {
+    log_d("Pushing new frame.");
+
+    assert(view_registry_.count(n) > 0);
+    const auto &v = view_registry_[n];
+    v->Init(this);
+    view_changes_.push_back(v);
+  }
+
+  // Initial registration
+  bool RegisterFrame(const View::ptr_t &f) {
+    assert(!f->name().empty());
+    if (view_registry_.count(f->name()) > 0) {
+      log_e("View %s already registered.", f->name());
+      return false;
+    }
+    f->Prepare(this);
+    view_registry_[f->name()] = f;
+    return true;
   }
 
   void PopFrame() { remove_last_ = true; }
@@ -50,6 +65,8 @@ private:
   std::vector<View::ptr_t> view_stack_;
 
   std::vector<View::ptr_t> view_changes_;
+
+  std::unordered_map<std::string, View::ptr_t> view_registry_;
 
   TouchState state_ = TS_NONE;
 

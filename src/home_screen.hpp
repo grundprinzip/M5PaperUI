@@ -16,8 +16,9 @@ public:
   /// Initializes all views that have been added to the frame.
   void Init(WidgetContext *) override;
 
+  void Prepare(WidgetContext *) override;
+
 private:
-  void Prepare(WidgetContext *ctx);
   void CreateAppButton(int16_t x, int16_t y, const std::string &name,
                        const uint8_t *icon, WButton::handler_fun_t fun);
 

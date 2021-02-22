@@ -33,6 +33,9 @@ class Widget;
 class View {
 public:
   using ptr_t = std::shared_ptr<View>;
+
+  virtual void Prepare(WidgetContext *) {}
+
   virtual void Init(WidgetContext *) = 0;
 
   /// Returns true if a full update is needed or if a partial update was done
@@ -47,6 +50,13 @@ public:
   /// event. The touch event contains necessary information about the state of
   /// the touch and some of its raw parameters
   virtual void HandleEvent(TouchEvent evt) = 0;
+
+  inline void Name(const std::string n) { name_ = n; }
+
+  inline std::string name() const { return name_; }
+
+private:
+  std::string name_;
 };
 
 /// The frame is the center piece when displaying content on the screen. A frame
@@ -72,15 +82,15 @@ public:
     }
   };
 
+  Frame(int16_t x, int16_t y, int16_t w, int16_t h) : Frame() {
+    x_ = x, y_ = y, width_ = w, height_ = h;
+  }
+
   /// Initialize the Frame.
   Frame() : canvas_(&M5.EPD) {}
 
   static ptr_t Create(int16_t x, int16_t y, int16_t w, int16_t h) {
-    const auto &ptr = std::make_shared<Frame>();
-    ptr->x_ = x;
-    ptr->y_ = y;
-    ptr->width_ = w;
-    ptr->height_ = h;
+    const auto &ptr = std::make_shared<Frame>(x, y, w, h);
     return ptr;
   }
 
@@ -116,9 +126,6 @@ public:
 
   Rect dimension() const { return {x_, y_, width_, height_}; }
 
-  inline void Name(const std::string n) { name_ = n; }
-
-  inline std::string name() const { return name_; }
 
 protected:
   int16_t x_;
@@ -143,6 +150,4 @@ protected:
   M5EPD_Canvas canvas_;
 
   bool initialized_ = false;
-
-  std::string name_;
 };
