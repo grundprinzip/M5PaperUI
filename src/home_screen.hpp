@@ -18,6 +18,8 @@ public:
 
   void Prepare(WidgetContext *) override;
 
+  ScreenUpdateMode Draw() override;
+
 private:
   void CreateAppButton(int16_t x, int16_t y, const std::string &name,
                        const uint8_t *icon, WButton::handler_fun_t fun);

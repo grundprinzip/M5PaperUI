@@ -64,7 +64,7 @@ bool WIconButton::Draw() {
     if (last_event_ == EventType::TOUCH_DOWN) {
       downCanvas_.pushCanvas(x_offset_, y_offset_, UPDATE_MODE_GC16);
     } else {
-      canvas_->pushCanvas(x_offset_, y_offset_, UPDATE_MODE_GC16);
+      canvas_->pushCanvas(x_offset_, y_offset_, parent_->update_mode());
     }
     view_dirty_ = false;
   }

@@ -71,7 +71,6 @@ void MainWindow::InitializeHomeScreen(const WidgetContext::ptr_t &ctx) {
   // Create the frame
   home_screen_ = HomeScreen::Create(2, top_dim.h + 2, 536,
                                     960 - 8 - top_dim.h - bot_dim.h);
-  home_screen_->UpdateMode(UPDATE_MODE_GC16);
   auto home_dim = home_screen_->dimension();
   log_d("Home Dim %s", home_dim.str().c_str());
   home_screen_->Name("HomeScreenFrame");

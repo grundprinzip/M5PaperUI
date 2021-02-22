@@ -99,7 +99,7 @@ public:
 
   /// Is called to draw all view elements. View elements are only drawn if
   /// dirty.
-  ScreenUpdateMode Draw() override;
+  virtual ScreenUpdateMode Draw() override;
 
   /// Allows setting the update mode for the display. Different update modes
   /// have different properties with regards to refresh time and ghosting on the

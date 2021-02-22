@@ -80,9 +80,6 @@ void WidgetContext::Draw() {
 
   if (mode == ScreenUpdateMode::FULL) {
     log_d("Update full screen.");
-    if (M5.EPD.UpdateCount() > 4) {
-      M5.EPD.UpdateFull(UPDATE_MODE_GC16);
-      M5.EPD.ResetUpdateCount();
-    }
+    M5.EPD.UpdateFull(UPDATE_MODE_GC16);
   }
 }

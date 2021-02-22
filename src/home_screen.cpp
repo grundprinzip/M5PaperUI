@@ -7,7 +7,7 @@ HomeScreen::HomeScreen(int16_t x, int16_t y, int16_t w, int16_t h) : Frame() {
   y_ = y;
   width_ = w;
   height_ = h;
-  update_mode_ = UPDATE_MODE_GC16;
+  update_mode_ = UPDATE_MODE_NONE;
 }
 
 void HomeScreen::CreateAppButton(int16_t x, int16_t y, const std::string &name,
@@ -68,3 +68,8 @@ void HomeScreen::Prepare(WidgetContext *ctx) {
 }
 
 void HomeScreen::Init(WidgetContext *ctx) { Frame::Init(ctx); }
+
+ScreenUpdateMode HomeScreen::Draw() {
+  return Frame::Draw();
+  // return ScreenUpdateMode::FULL;
+}
