@@ -10,7 +10,6 @@ void WButton::Reset() {
 void WButton::Init() {
   // This is dangerous, because in theory, label is free to call super() as
   // well.
-  Widget::Init();
   Label::Init();
   downCanvas_.createCanvas(width_, height_);
 
