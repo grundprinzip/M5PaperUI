@@ -14,6 +14,16 @@ void TicTacToe::Reset() {
   // Reset board
   ResetBoard();
 
+  msg_ = "";
+  lbl_msg_->Text(msg_);
+  lbl_msg_->Init();
+  lbl_msg_->UpdateMode(UPDATE_MODE_NONE);
+  lbl_msg_->Reset();
+  score_o_->UpdateMode(UPDATE_MODE_NONE);
+  score_o_->Reset();
+  score_x_->UpdateMode(UPDATE_MODE_NONE);
+  score_x_->Reset();
+
   RequireRedraw();
 }
 
@@ -134,38 +144,37 @@ void TicTacToe::Prepare(WidgetContext *ctx) {
   btn->BorderColor(Grayscale::GS_BLACK);
   btn->HAlign(Label::MIDDLE);
   btn->VAlign(Label::CENTER);
+  btn->RegisterHandler([self, this](TouchEvent e, Widget *) { self->Reset(); });
   AddWidget(btn);
 }
 
 void TicTacToe::Next() {
   Element end = won();
   if (end != Element::NONE) {
+
+    std::ostringstream buf;
+
     if (end == Element::X) {
       val_score_x_++;
       msg_ = "Player X won!";
+      buf << val_score_x_;
+      score_x_->Text(buf.str());
+      score_x_->Init();
+      score_x_->UpdateMode(UPDATE_MODE_GC16);
+      score_x_->Reset();
     } else {
       val_score_o_++;
       msg_ = "Player O won!";
+      buf << val_score_o_;
+      score_o_->Text(buf.str());
+      score_o_->Init();
+      score_o_->UpdateMode(UPDATE_MODE_GC16);
+      score_o_->Reset();
     }
-
     lbl_msg_->Text(msg_);
     lbl_msg_->Init();
     lbl_msg_->UpdateMode(UPDATE_MODE_GC16);
     lbl_msg_->Reset();
-
-    std::ostringstream buf;
-    buf << val_score_o_;
-    score_o_->Text(buf.str());
-    score_o_->Init();
-    score_o_->UpdateMode(UPDATE_MODE_GC16);
-    score_o_->Reset();
-
-    buf = std::ostringstream();
-    buf << val_score_x_;
-    score_x_->Text(buf.str());
-    score_x_->Init();
-    score_x_->UpdateMode(UPDATE_MODE_GC16);
-    score_x_->Reset();
   }
 }
 
