@@ -55,6 +55,8 @@ public:
 
   inline std::string name() const { return name_; }
 
+  inline virtual void Reset() {}
+
 private:
   std::string name_;
 };

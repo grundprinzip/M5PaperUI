@@ -29,6 +29,7 @@ void initializeSystem() {
   font.loadFont(binaryttf, sizeof(binaryttf));
   font.createRender(26, 128);
   font.createRender(20, 128);
+  font.createRender(30, 128);
 
   global_settings = Settings::Load();
   log_d("Done SysInit");

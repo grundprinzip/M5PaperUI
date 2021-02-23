@@ -43,7 +43,7 @@ void MainWindow::InitializeBottomBar(const WidgetContext::ptr_t &ctx) {
   back->HAlign(Label::MIDDLE);
   back->VAlign(Label::CENTER);
   auto self = shared_from_this();
-  back->RegisterHandler([this, self, ctx](TouchEvent evt) {
+  back->RegisterHandler([this, self, ctx](TouchEvent evt, Widget *) {
     if (evt.type == EventType::TOUCH_UP && !this->home_screen_->NeedsRedraw()) {
       log_d("Dropping frame");
       ctx->PopFrame();

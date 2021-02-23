@@ -1,6 +1,8 @@
 #include "widget.hpp"
 
 void Widget::Init() {
+  // Create a new canvas for this on screen component.
+  canvas_->createCanvas(width_, height_);
   log_d("Initialize widget %s", name_.c_str());
   // Initialize the view to be dirty to draw it the first time.
   view_dirty_ = true;
@@ -78,7 +80,8 @@ bool Widget::Draw() {
           x_offset_, y_, y_offset_, has_own_canvas_, parent_->update_mode());
     if (has_own_canvas_) {
       // Only some update modes support grayscale display.
-      auto update_mode = parent_->update_mode();
+      auto update_mode =
+          use_child_update_mode_ ? update_mode_ : parent_->update_mode();
       bool supportsGrayscale =
           update_mode == UPDATE_MODE_GC16 || update_mode == UPDATE_MODE_INIT ||
           update_mode == UPDATE_MODE_GL16 || update_mode == UPDATE_MODE_GLD16 ||
@@ -87,7 +90,7 @@ bool Widget::Draw() {
         log_d("Update mode of the EPD might not support grayscale display");
       }
 
-      canvas_->pushCanvas(x_offset_, y_offset_, parent_->update_mode());
+      canvas_->pushCanvas(x_offset_, y_offset_, update_mode);
     }
     view_dirty_ = false;
   }
@@ -101,6 +104,6 @@ void Widget::RegisterHandler(handler_fun_t f) { handlers_.push_back(f); }
 void Widget::HandleEvent(TouchEvent evt) {
   InternalEventHandler(evt);
   for (const auto &h : handlers_) {
-    h(evt);
+    h(evt, this);
   }
 }

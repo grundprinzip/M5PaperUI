@@ -16,7 +16,7 @@ public:
   using ptr_t = std::shared_ptr<Widget>;
 
   // Function pointer to the handler
-  using handler_fun_t = std::function<void(TouchEvent)>;
+  using handler_fun_t = std::function<void(TouchEvent, Widget *)>;
 
   struct Point {
     int16_t x;
@@ -41,8 +41,7 @@ public:
   Widget(int16_t x_offset, int16_t y_offset, int16_t width, int16_t height)
       : width_(width), height_(height), x_(x_offset), y_(y_offset),
         canvas_(new M5EPD_Canvas(&M5.EPD)) {
-    // Create a new canvas for this on screen component.
-    canvas_->createCanvas(width_, height_);
+
   }
 
   virtual ~Widget() {
@@ -118,6 +117,10 @@ public:
 
   inline void SetBorderRadius(int16_t r) { border_radius_ = r; }
 
+  inline void UpdateMode(m5epd_update_mode_t m) { update_mode_ = m; }
+
+  inline void SetChildUpdateMode(bool v) { use_child_update_mode_ = v; }
+
 protected:
   // Helper method that allows a widget to response to any event.
   virtual void InternalEventHandler(TouchEvent evt) {}
@@ -166,4 +169,7 @@ protected:
   int16_t border_radius_ = 5;
 
   BorderStyle border_style_ = BorderStyle::NONE;
+
+  m5epd_update_mode_t update_mode_ = UPDATE_MODE_NONE;
+  bool use_child_update_mode_ = false;
 };

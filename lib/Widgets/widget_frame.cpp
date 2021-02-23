@@ -26,6 +26,7 @@ void Frame::Init(WidgetContext *) {
   if (initialized_) {
     log_d("Frame %s is already initialized.", name().c_str());
     RequireRedraw();
+    Reset();
     for (const auto &w : widgets_) {
       w->Reset();
     }
