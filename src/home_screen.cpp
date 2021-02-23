@@ -58,7 +58,7 @@ void HomeScreen::Prepare(WidgetContext *ctx) {
   CreateAppButton(30 + 116 + 50, 30, "Settings", SETTINGS_96_96,
                   [](TouchEvent e, Widget *) {});
 
-  CreateAppButton(30 + 2 * (116 + 50), 30, "Tic Tac Toe", SETTINGS_96_96,
+  CreateAppButton(30 + 2 * (116 + 50), 30, "Tic Tac Toe", TICTAC_96_96_2,
                   [home_dim, ctx](TouchEvent e, Widget *) {
                     if (e.type != EventType::TOUCH_UP)
                       return;
