@@ -5,6 +5,10 @@
 
 #include "widget.hpp"
 
+/**
+ * A label is derived from the a widget but the main purpose is to draw a string
+ * on the screen. The positioning and color of the text can be adjusted.
+ * */
 class Label : public Widget {
 public:
   enum HAlignment { LEFT, MIDDLE, RIGHT };
