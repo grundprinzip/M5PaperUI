@@ -84,31 +84,42 @@ private:
     Element state_;
   };
 
+  /// Used to reset the game board and all the internal counters accordingly.
   void ResetBoard();
 
+  /// Used to trigger if a player has won, and if this is the case, update the
+  /// label values and the scoring.
   void Next();
 
+  /// Returns the value of the game field at position `id`.
   Element get(int16_t id) const;
 
+  /// Sets the value of the game field at position `id` with value `f`.
   void Set(int16_t id, Element f);
 
+  /// Returns which player has won the game `Element::X` or `Element::O`. In
+  /// case the game is still ongoing returns `Element::NONE`.
   Element won() const;
 
+  /// Switches to the next player.
   inline void NextPlayer() {
     current_player_ = current_player_ == Element::X ? Element::O : Element::X;
   }
 
+  /// Keeps track of the score for X.
   int16_t val_score_x_ = 0;
+  /// Keeps track of the score for O.
   int16_t val_score_o_ = 0;
-
+  /// The game board of exactly 9 fields.
   std::array<Element, 9> board_;
-
+  /// The current player.
   Element current_player_ = Element::X;
-
+  /// Referencing the label displaying the score for X.
   Label::ptr_t score_x_;
-
+  /// Referencing the label displaying the score for O.
   Label::ptr_t score_o_;
-
+  /// Referencing the label displaying the winning player..
   Label::ptr_t lbl_msg_;
+  /// Value of the message to be displayed by `lbl_msg_`.
   std::string msg_;
 };

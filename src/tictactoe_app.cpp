@@ -83,7 +83,10 @@ void TicTacToe::Prepare(WidgetContext *ctx) {
                                        field_size);
       b->Name("Field");
       b->RegisterHandler([self, this, c, r](TouchEvent evt, Widget *w) {
-        if (evt.type != EventType::TOUCH_UP || self->won() != Element::NONE)
+        // Only react on Touch up, if the game is not won and if the field is
+        // empty.
+        if (evt.type != EventType::TOUCH_UP || self->won() != Element::NONE ||
+            self->get(r * 3 + c) != Element::NONE)
           return;
         log_d("Pushing %d %d", c, r);
         // This is no dynamic cast because of of no-rtti
