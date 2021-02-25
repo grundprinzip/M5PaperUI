@@ -23,6 +23,8 @@ e-paper display is an expensive operation, and issuing a refresh is only done
 upon state changes. Furthermore, it is possible to refresh only a subset of the
 whole screen much faster than the whole screen.
 
+![main scren](doc/home.jpeg)
+
 ## The goal?
 
 Provide a good sample library with lot's of documentation in the code that makes
@@ -78,7 +80,10 @@ Right now, the following sample applications are part of the repository.
   draw with their finger on the screen. In addition to drawing the line, the
   size of the line depends on the size of the touch events. Change the
   positioning of your finger on the screen to draw bigger or smaller arcs.
+  ![Paint App](doc/pain.jpeg)
 * Tic Tac Toe - Very simple implementation of the well-known game. The main idea
   behind this game is to show how to combine using the canvas of the parent
   frame together with individual other frames during partial refreshes of the
   screen.
+  ![Tic Tac Toe](doc/tictactoe.jpeg)
+
